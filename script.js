@@ -21,11 +21,7 @@ document.addEventListener("DOMContentLoaded", function() {
         document.getElementById("connectModeButton").classList.toggle("connect-mode", connectMode);
         let items = document.querySelectorAll(".item");
         items.forEach(item => {
-            if (connectMode) {
-                instance.setDraggable(item, false); // Deaktiviere das Bewegen
-            } else {
-                instance.setDraggable(item, true); // Aktiviere das Bewegen wieder
-            }
+            instance.setDraggable(item, !connectMode); // Deaktiviere das Bewegen im Verbindungsmodus
         });
         console.log("Verbindungsmodus:", connectMode);
         if (!connectMode) {
