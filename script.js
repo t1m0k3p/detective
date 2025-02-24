@@ -7,19 +7,20 @@ jsPlumb.ready(function () {
     });
 
     function makeDraggable(item) {
-        setTimeout(() => {
-            instance.draggable(item);
-        }, 100); // Sicherstellen, dass das Element im DOM existiert
+        instance.draggable(item, {
+            containment: "parent"
+        });
     }
 
     function addItem() {
+        let board = document.getElementById("board");
         let newItem = document.createElement("div");
         newItem.className = "item";
         newItem.id = "item" + document.querySelectorAll(".item").length;
-        newItem.style.top = Math.random() * 400 + "px";
-        newItem.style.left = Math.random() * 400 + "px";
+        newItem.style.top = Math.random() * (board.clientHeight - 50) + "px";
+        newItem.style.left = Math.random() * (board.clientWidth - 150) + "px";
         newItem.textContent = "📌 Neues Element";
-        document.getElementById("board").appendChild(newItem);
+        board.appendChild(newItem);
         makeDraggable(newItem);
     }
 
@@ -48,7 +49,7 @@ jsPlumb.ready(function () {
                 makeDraggable(item);
             });
         }
-        instance.repaintEverything(); // Aktualisiert jsPlumb nach dem Laden
+        instance.repaintEverything();
     }
 
     document.addEventListener("DOMContentLoaded", function() {
