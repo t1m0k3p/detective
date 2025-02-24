@@ -6,6 +6,10 @@ jsPlumb.ready(function () {
         EndpointStyle: { fill: "white" }
     });
 
+    function makeDraggable(item) {
+        instance.draggable(item);
+    }
+
     function addItem() {
         let newItem = document.createElement("div");
         newItem.className = "item";
@@ -14,7 +18,7 @@ jsPlumb.ready(function () {
         newItem.style.left = Math.random() * 400 + "px";
         newItem.textContent = "📌 Neues Element";
         document.getElementById("board").appendChild(newItem);
-        instance.draggable(newItem.id);
+        makeDraggable(newItem);
     }
 
     function saveBoard() {
@@ -39,7 +43,7 @@ jsPlumb.ready(function () {
                 item.style.left = itemData.left;
                 item.textContent = itemData.text;
                 board.appendChild(item);
-                instance.draggable(item.id);
+                makeDraggable(item);
             });
         }
     }
