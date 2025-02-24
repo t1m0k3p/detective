@@ -76,6 +76,13 @@ document.addEventListener("DOMContentLoaded", function() {
         instance.repaintEverything();
     }
 
+    function resetBoard() {
+        console.log("Zurücksetzen...");
+        localStorage.removeItem("boardData");
+        document.getElementById("board").innerHTML = "";
+        instance.reset();
+    }
+
     function handleConnection(item) {
         if (!firstSelected) {
             firstSelected = item;
@@ -108,6 +115,10 @@ document.addEventListener("DOMContentLoaded", function() {
         if (!connectMode) {
             firstSelected = null;
         }
+    });
+    document.getElementById("resetBoardButton").addEventListener("click", function() {
+        console.log("Button 'Zurücksetzen' geklickt");
+        resetBoard();
     });
 
     loadBoard();
