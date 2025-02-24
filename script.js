@@ -14,6 +14,7 @@ document.addEventListener("DOMContentLoaded", function() {
     });
 
     let connectMode = false;
+    let firstSelected = null;
     
     function makeDraggable(item) {
         console.log("makeDraggable aufgerufen für", item.id);
@@ -24,6 +25,11 @@ document.addEventListener("DOMContentLoaded", function() {
         });
         instance.makeTarget(item, {
             anchor: "Continuous",
+        });
+        item.addEventListener("click", function() {
+            if (connectMode) {
+                handleConnection(item);
+            }
         });
     }
 
@@ -70,6 +76,20 @@ document.addEventListener("DOMContentLoaded", function() {
         instance.repaintEverything();
     }
 
+    function handleConnection(item) {
+        if (!firstSelected) {
+            firstSelected = item;
+            console.log("Erstes Element gewählt:", item.id);
+        } else {
+            instance.connect({
+                source: firstSelected,
+                target: item
+            });
+            console.log("Verbindung erstellt zwischen", firstSelected.id, "und", item.id);
+            firstSelected = null;
+        }
+    }
+
     document.getElementById("addItemButton").addEventListener("click", function() {
         console.log("Button 'Neues Element' geklickt");
         addItem();
@@ -85,26 +105,8 @@ document.addEventListener("DOMContentLoaded", function() {
     document.getElementById("connectModeButton").addEventListener("click", function() {
         connectMode = !connectMode;
         console.log("Verbindungsmodus:", connectMode);
-        if (connectMode) {
-            document.querySelectorAll(".item").forEach(item => {
-                item.addEventListener("click", function(e) {
-                    if (connectMode) {
-                        if (!instance.firstSelected) {
-                            instance.firstSelected = item;
-                            console.log("Erstes Element gewählt:", item.id);
-                        } else {
-                            instance.connect({
-                                source: instance.firstSelected,
-                                target: item
-                            });
-                            console.log("Verbindung erstellt zwischen", instance.firstSelected.id, "und", item.id);
-                            instance.firstSelected = null;
-                        }
-                    }
-                });
-            });
-        } else {
-            instance.firstSelected = null;
+        if (!connectMode) {
+            firstSelected = null;
         }
     });
 
