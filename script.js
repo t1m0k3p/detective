@@ -13,9 +13,18 @@ document.addEventListener("DOMContentLoaded", function() {
         EndpointStyle: { fill: "white" }
     });
 
+    let connectMode = false;
+    
     function makeDraggable(item) {
         console.log("makeDraggable aufgerufen für", item.id);
         instance.draggable(item, { containment: "parent" });
+        instance.makeSource(item, {
+            anchor: "Continuous",
+            connector: ["Straight"],
+        });
+        instance.makeTarget(item, {
+            anchor: "Continuous",
+        });
     }
 
     function addItem() {
@@ -72,6 +81,31 @@ document.addEventListener("DOMContentLoaded", function() {
     document.getElementById("loadBoardButton").addEventListener("click", function() {
         console.log("Button 'Laden' geklickt");
         loadBoard();
+    });
+    document.getElementById("connectModeButton").addEventListener("click", function() {
+        connectMode = !connectMode;
+        console.log("Verbindungsmodus:", connectMode);
+        if (connectMode) {
+            document.querySelectorAll(".item").forEach(item => {
+                item.addEventListener("click", function(e) {
+                    if (connectMode) {
+                        if (!instance.firstSelected) {
+                            instance.firstSelected = item;
+                            console.log("Erstes Element gewählt:", item.id);
+                        } else {
+                            instance.connect({
+                                source: instance.firstSelected,
+                                target: item
+                            });
+                            console.log("Verbindung erstellt zwischen", instance.firstSelected.id, "und", item.id);
+                            instance.firstSelected = null;
+                        }
+                    }
+                });
+            });
+        } else {
+            instance.firstSelected = null;
+        }
     });
 
     loadBoard();
