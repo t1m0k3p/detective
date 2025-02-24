@@ -1,4 +1,4 @@
-jsPlumb.ready(function () {
+document.addEventListener("DOMContentLoaded", function() {
     var instance = jsPlumb.getInstance({
         Connector: ["Straight"],
         Endpoint: ["Dot", { radius: 5 }],
@@ -7,12 +7,11 @@ jsPlumb.ready(function () {
     });
 
     function makeDraggable(item) {
-        instance.draggable(item, {
-            containment: "parent"
-        });
+        instance.draggable(item, { containment: "parent" });
     }
 
     function addItem() {
+        console.log("Neues Element wird hinzugefügt...");
         let board = document.getElementById("board");
         let newItem = document.createElement("div");
         newItem.className = "item";
@@ -25,6 +24,7 @@ jsPlumb.ready(function () {
     }
 
     function saveBoard() {
+        console.log("Speichern... ");
         let items = document.querySelectorAll(".item");
         let data = [];
         items.forEach(item => {
@@ -34,6 +34,7 @@ jsPlumb.ready(function () {
     }
 
     function loadBoard() {
+        console.log("Laden...");
         let board = document.getElementById("board");
         board.innerHTML = "";
         let data = JSON.parse(localStorage.getItem("boardData"));
@@ -52,7 +53,9 @@ jsPlumb.ready(function () {
         instance.repaintEverything();
     }
 
-    document.addEventListener("DOMContentLoaded", function() {
-        loadBoard();
-    });
+    document.getElementById("addItemButton").addEventListener("click", addItem);
+    document.getElementById("saveBoardButton").addEventListener("click", saveBoard);
+    document.getElementById("loadBoardButton").addEventListener("click", loadBoard);
+
+    loadBoard();
 });
