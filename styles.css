@@ -1,0 +1,22 @@
+body {
+    font-family: Arial, sans-serif;
+    background-color: #222;
+    color: white;
+}
+
+#board {
+    width: 90vw;
+    height: 80vh;
+    border: 2px solid white;
+    position: relative;
+    margin: 20px auto;
+}
+
+.item {
+    width: 150px;
+    padding: 10px;
+    background: #444;
+    border: 1px solid white;
+    position: absolute;
+    cursor: grab;
+}

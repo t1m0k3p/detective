@@ -10,10 +10,10 @@
 </head>
 <body>
     <h1>Detective-Pinnwand</h1>
-    <div id="board">
-        <div class="item" id="person1" style="top: 50px; left: 50px;">🕵️‍♂️ Person A</div>
-        <div class="item" id="clue1" style="top: 200px; left: 300px;">🔎 Hinweis 1</div>
-    </div>
+    <button onclick="addItem()">Neues Element</button>
+    <button onclick="saveBoard()">Speichern</button>
+    <button onclick="loadBoard()">Laden</button>
+    <div id="board"></div>
     <script src="script.js"></script>
 </body>
 </html>
