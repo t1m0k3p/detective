@@ -46,7 +46,10 @@ jsPlumb.ready(function () {
                 makeDraggable(item);
             });
         }
+        instance.repaintEverything(); // Aktualisiert jsPlumb nach dem Laden
     }
 
-    document.addEventListener("DOMContentLoaded", loadBoard);
+    document.addEventListener("DOMContentLoaded", function() {
+        loadBoard();
+    });
 });
