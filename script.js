@@ -1,4 +1,11 @@
 document.addEventListener("DOMContentLoaded", function() {
+    console.log("Script geladen!");
+    
+    if (typeof jsPlumb === "undefined") {
+        console.error("jsPlumb konnte nicht geladen werden.");
+        return;
+    }
+
     var instance = jsPlumb.getInstance({
         Connector: ["Straight"],
         Endpoint: ["Dot", { radius: 5 }],
@@ -7,6 +14,7 @@ document.addEventListener("DOMContentLoaded", function() {
     });
 
     function makeDraggable(item) {
+        console.log("makeDraggable aufgerufen für", item.id);
         instance.draggable(item, { containment: "parent" });
     }
 
@@ -53,9 +61,18 @@ document.addEventListener("DOMContentLoaded", function() {
         instance.repaintEverything();
     }
 
-    document.getElementById("addItemButton").addEventListener("click", addItem);
-    document.getElementById("saveBoardButton").addEventListener("click", saveBoard);
-    document.getElementById("loadBoardButton").addEventListener("click", loadBoard);
+    document.getElementById("addItemButton").addEventListener("click", function() {
+        console.log("Button 'Neues Element' geklickt");
+        addItem();
+    });
+    document.getElementById("saveBoardButton").addEventListener("click", function() {
+        console.log("Button 'Speichern' geklickt");
+        saveBoard();
+    });
+    document.getElementById("loadBoardButton").addEventListener("click", function() {
+        console.log("Button 'Laden' geklickt");
+        loadBoard();
+    });
 
     loadBoard();
 });
