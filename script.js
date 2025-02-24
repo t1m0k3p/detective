@@ -79,10 +79,10 @@ document.addEventListener("DOMContentLoaded", function() {
     function resetBoard() {
         console.log("Zurücksetzen...");
         localStorage.removeItem("boardData");
-        instance.deleteEveryConnection(); // Entfernt alle Verbindungen
+        instance.deleteEveryConnection(); // Alle Verbindungen löschen
         document.getElementById("board").innerHTML = "";
-        instance.reset(); // Setzt jsPlumb komplett zurück
     }
+
 
     function handleConnection(item) {
         if (!firstSelected) {
