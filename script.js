@@ -7,7 +7,9 @@ jsPlumb.ready(function () {
     });
 
     function makeDraggable(item) {
-        instance.draggable(item);
+        setTimeout(() => {
+            instance.draggable(item);
+        }, 100); // Sicherstellen, dass das Element im DOM existiert
     }
 
     function addItem() {
