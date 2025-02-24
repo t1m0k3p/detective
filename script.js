@@ -16,66 +16,23 @@ document.addEventListener("DOMContentLoaded", function() {
     let connectMode = false;
     let firstSelected = null;
     
-    function makeDraggable(item) {
-        console.log("makeDraggable aufgerufen für", item.id);
-        instance.draggable(item, { containment: "parent" });
-        instance.makeSource(item, {
-            anchor: "Continuous",
-            connector: ["Straight"],
-        });
-        instance.makeTarget(item, {
-            anchor: "Continuous",
-        });
-        item.addEventListener("click", function() {
+    function toggleConnectMode() {
+        connectMode = !connectMode;
+        document.getElementById("connectModeButton").classList.toggle("connect-mode", connectMode);
+        let items = document.querySelectorAll(".item");
+        items.forEach(item => {
             if (connectMode) {
-                handleConnection(item);
+                instance.setDraggable(item, false); // Deaktiviere das Bewegen
+            } else {
+                instance.setDraggable(item, true); // Aktiviere das Bewegen wieder
             }
         });
-    }
-
-    function addItem() {
-        console.log("Neues Element wird hinzugefügt...");
-        let board = document.getElementById("board");
-        let newItem = document.createElement("div");
-        newItem.className = "item";
-        newItem.id = "item" + document.querySelectorAll(".item").length;
-        newItem.style.top = Math.random() * (board.clientHeight - 50) + "px";
-        newItem.style.left = Math.random() * (board.clientWidth - 150) + "px";
-        newItem.textContent = "📌 Neues Element";
-        board.appendChild(newItem);
-        makeDraggable(newItem);
-    }
-
-    function saveBoard() {
-        console.log("Speichern... ");
-        let items = document.querySelectorAll(".item");
-        let data = [];
-        items.forEach(item => {
-            data.push({ id: item.id, top: item.style.top, left: item.style.left, text: item.textContent });
-        });
-        localStorage.setItem("boardData", JSON.stringify(data));
-    }
-
-    function loadBoard() {
-        console.log("Laden...");
-        let board = document.getElementById("board");
-        board.innerHTML = "";
-        let data = JSON.parse(localStorage.getItem("boardData"));
-        if (data) {
-            data.forEach(itemData => {
-                let item = document.createElement("div");
-                item.className = "item";
-                item.id = itemData.id;
-                item.style.top = itemData.top;
-                item.style.left = itemData.left;
-                item.textContent = itemData.text;
-                board.appendChild(item);
-                makeDraggable(item);
-            });
+        console.log("Verbindungsmodus:", connectMode);
+        if (!connectMode) {
+            firstSelected = null;
         }
-        instance.repaintEverything();
     }
-
+    
     function resetBoard() {
         console.log("Zurücksetzen...");
         localStorage.removeItem("boardData");
@@ -83,44 +40,13 @@ document.addEventListener("DOMContentLoaded", function() {
         document.getElementById("board").innerHTML = "";
     }
 
-
-    function handleConnection(item) {
-        if (!firstSelected) {
-            firstSelected = item;
-            console.log("Erstes Element gewählt:", item.id);
-        } else {
-            instance.connect({
-                source: firstSelected,
-                target: item
-            });
-            console.log("Verbindung erstellt zwischen", firstSelected.id, "und", item.id);
-            firstSelected = null;
-        }
-    }
-
-    document.getElementById("addItemButton").addEventListener("click", function() {
-        console.log("Button 'Neues Element' geklickt");
-        addItem();
-    });
-    document.getElementById("saveBoardButton").addEventListener("click", function() {
-        console.log("Button 'Speichern' geklickt");
-        saveBoard();
-    });
-    document.getElementById("loadBoardButton").addEventListener("click", function() {
-        console.log("Button 'Laden' geklickt");
-        loadBoard();
-    });
-    document.getElementById("connectModeButton").addEventListener("click", function() {
-        connectMode = !connectMode;
-        console.log("Verbindungsmodus:", connectMode);
-        if (!connectMode) {
-            firstSelected = null;
-        }
-    });
     document.getElementById("resetBoardButton").addEventListener("click", function() {
         console.log("Button 'Zurücksetzen' geklickt");
         resetBoard();
     });
-
-    loadBoard();
+    
+    document.getElementById("connectModeButton").addEventListener("click", function() {
+        console.log("Button 'Verbindungsmodus' geklickt");
+        toggleConnectMode();
+    });
 });
